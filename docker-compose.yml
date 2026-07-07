@@ -1,0 +1,16 @@
+services:
+  my-db-thc:
+    image: postgres:16.0
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: manoale97
+      POSTGRES_PASSWORD: ec7845ab
+      POSTGRES_DB: db_thc
+    ports:
+      - "5432:5432"
+    volumes:
+      - datos_postgres:/var/lib/postgresql/data
+
+volumes:
+  datos_postgres:
