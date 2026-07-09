@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { NotificationChannelInterface, SendNotificationOptions, SendNotificationResult } from '../interfaces/channel.interface';
+import { ChannelInterface, SendNotificationOptions, SendNotificationResult } from '../interfaces/channel.interface';
 
 @Injectable()
-export class SmsChannel implements NotificationChannelInterface {
+export class SmsChannel implements ChannelInterface {
     private readonly logger = new Logger(SmsChannel.name);
 
     getChannelCode(): string {
@@ -30,12 +30,7 @@ export class SmsChannel implements NotificationChannelInterface {
         try {
             this.logger.log(`Sending SMS to ${recipient.phone || recipient}`);
             
-            // Simular envío de SMS (usar Twilio, AWS SNS, etc.)
-            // const result = await this.smsService.send({
-            //     to: recipient.phone || recipient,
-            //     body: this.formatContent(content, options),
-            // });
-
+            // Simular envío de SMS
             await new Promise(resolve => setTimeout(resolve, 50));
 
             return {
@@ -44,7 +39,7 @@ export class SmsChannel implements NotificationChannelInterface {
                 sentAt: new Date(),
                 deliveredAt: new Date(),
             };
-        } catch (error) {
+        } catch (error:any) {
             this.logger.error(`Failed to send SMS: ${error.message}`);
             return {
                 success: false,
@@ -55,14 +50,6 @@ export class SmsChannel implements NotificationChannelInterface {
 
     getMaxLength(): number {
         return 160;
-    }
-
-    getRateLimit() {
-        return {
-            maxPerSecond: 5,
-            maxPerMinute: 50,
-            maxPerHour: 500,
-        };
     }
 
     formatContent(content: string, options?: SendNotificationOptions): string {

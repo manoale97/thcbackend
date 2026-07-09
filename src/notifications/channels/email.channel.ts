@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { NotificationChannelInterface, SendNotificationOptions, SendNotificationResult } from '../interfaces/channel.interface';
+import { ChannelInterface, SendNotificationOptions, SendNotificationResult } from '../interfaces/channel.interface';
 
 @Injectable()
-export class EmailChannel implements NotificationChannelInterface {
+export class EmailChannel implements ChannelInterface {
     private readonly logger = new Logger(EmailChannel.name);
 
     getChannelCode(): string {
@@ -30,16 +30,7 @@ export class EmailChannel implements NotificationChannelInterface {
         try {
             this.logger.log(`Sending email to ${recipient.email || recipient}`);
             
-            // Simular envío de email (usar nodemailer, SendGrid, AWS SES, etc.)
-            // const result = await this.emailService.send({
-            //     to: recipient.email || recipient,
-            //     subject: options?.variables?.subject || 'Notification',
-            //     html: this.formatContent(content, options),
-            //     template: options?.template,
-            //     ...options,
-            // });
-
-            // Simulación
+            // Simular envío de email
             await new Promise(resolve => setTimeout(resolve, 100));
 
             return {
@@ -52,7 +43,7 @@ export class EmailChannel implements NotificationChannelInterface {
                     template: options?.template,
                 },
             };
-        } catch (error) {
+        } catch (error:any) {
             this.logger.error(`Failed to send email: ${error.message}`);
             return {
                 success: false,

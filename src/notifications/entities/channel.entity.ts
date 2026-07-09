@@ -22,9 +22,6 @@ export class Channel {
     @Column({ length: 100 })
     name!: string;
 
-    @Column({ type: 'text', nullable: true })
-    description?: string;
-
     @Column({ default: true })
     isActive!: boolean;
 

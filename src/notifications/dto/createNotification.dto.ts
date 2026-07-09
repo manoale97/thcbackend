@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength, MaxLength, IsOptional, IsDate, IsEnum, IsNumber, IsNotEmpty, IsUUID} from 'class-validator';
 import { Type } from 'class-transformer';
-import { NotificationChannel, NotificationStatus, NotificationMetadata } from '../entities/notification.entity';
+import { NotificationStatus, NotificationMetadata } from '../entities/notification.entity';
 
 export class CreateNotificationDto {
     @ApiProperty({
@@ -24,17 +24,10 @@ export class CreateNotificationDto {
     @MinLength(10, { message: 'Content must be at least 10 characters' })
     content!: string;
 
-    @ApiProperty({
-        description: 'Notification channel',
-        enum: NotificationChannel,
-        example: NotificationChannel.EMAIL,
-        default: NotificationChannel.EMAIL,
-    })
-    @IsEnum(NotificationChannel, {
-        message: 'Channel must be one of: EMAIL, SMS, PUSH',
-    })
-    @IsNotEmpty({ message: 'Channel is required' })
-    channel?: NotificationChannel;
+    @ApiProperty({ example: 'email' })
+    @IsString()
+    @IsNotEmpty()
+    channelCode!: string;
 
     @ApiProperty({
         description: 'Notification status',

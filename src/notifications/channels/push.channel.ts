@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { NotificationChannelInterface, SendNotificationOptions, SendNotificationResult } from '../interfaces/channel.interface';
+import { ChannelInterface, SendNotificationOptions, SendNotificationResult } from '../interfaces/channel.interface';
 
 @Injectable()
-export class PushChannel implements NotificationChannelInterface {
+export class PushChannel implements ChannelInterface {
     private readonly logger = new Logger(PushChannel.name);
 
     getChannelCode(): string {
@@ -14,7 +14,7 @@ export class PushChannel implements NotificationChannelInterface {
     }
 
     validateRecipient(recipient: any): boolean {
-        return !!(recipient?.deviceId || recipient?.fcmToken || recipient?.apnsToken);
+        return !!(recipient?.deviceId || recipient?.deviceToken);
     }
 
     validateContent(content: string, options?: SendNotificationOptions): boolean {
@@ -29,14 +29,7 @@ export class PushChannel implements NotificationChannelInterface {
         try {
             this.logger.log(`Sending push notification to ${recipient.deviceId || 'unknown'}`);
             
-            // Simular envío de Push (usar Firebase, OneSignal, etc.)
-            // const result = await this.pushService.send({
-            //     to: recipient.deviceId || recipient.fcmToken,
-            //     title: options?.variables?.title || 'Notification',
-            //     body: this.formatContent(content, options),
-            //     data: options?.variables,
-            // });
-
+            // Simular envío de Push
             await new Promise(resolve => setTimeout(resolve, 80));
 
             return {
@@ -44,7 +37,7 @@ export class PushChannel implements NotificationChannelInterface {
                 messageId: `push_${Date.now()}`,
                 sentAt: new Date(),
             };
-        } catch (error) {
+        } catch (error:any) {
             this.logger.error(`Failed to send push notification: ${error.message}`);
             return {
                 success: false,
@@ -55,14 +48,6 @@ export class PushChannel implements NotificationChannelInterface {
 
     getMaxLength(): number {
         return 1000;
-    }
-
-    getRateLimit() {
-        return {
-            maxPerSecond: 20,
-            maxPerMinute: 200,
-            maxPerHour: 2000,
-        };
     }
 
     formatContent(content: string, options?: SendNotificationOptions): string {

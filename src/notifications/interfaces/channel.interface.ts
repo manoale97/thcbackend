@@ -13,7 +13,7 @@ export interface SendNotificationResult {
     metadata?: Record<string, any>;
 }
 
-export interface NotificationChannelInterface {
+export interface ChannelInterface {
     // Identificación del canal
     getChannelCode(): string;
     getChannelName(): string;
@@ -31,7 +31,6 @@ export interface NotificationChannelInterface {
     
     // Configuración
     getMaxLength(): number;
-    getRateLimit(): { maxPerSecond: number; maxPerMinute: number; maxPerHour: number };
     
     // Formateo
     formatContent(content: string, options?: SendNotificationOptions): string;
