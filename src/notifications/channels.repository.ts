@@ -8,13 +8,21 @@ export class ChannelsRepository {
   private channels = AppDataSource.getRepository(Channel);
 
   async findAll(): Promise<Channel[]> {
-    return await this.channels.find();
+    return await this.channels.find({where: {isActive: true}});
   }
 
   async findOne(id: string): Promise<Channel> {
-    const channel = await this.channels.findOne({where: {id}});
+    const channel = await this.channels.findOne({where: {id, isActive: true}});
     if (!channel) {
             throw new NotFoundException(`User with ID ${id} not found`);
+        }
+    return channel
+  }
+
+  async findOneWithCode(code: string): Promise<Channel> {
+    const channel = await this.channels.findOne({where: {code, isActive: true}});
+    if (!channel) {
+            throw new NotFoundException(`User with Code ${code} not found`);
         }
     return channel
   }
@@ -29,5 +37,15 @@ export class ChannelsRepository {
       if (result.affected === 0) {
           throw new NotFoundException(`User with ID ${id} not found`);
       }
+  }
+
+  async toggleChannel(code: string, isActive:boolean) {
+    const channel = await this.channels.findOne({ where: { code } });
+        if (!channel) {
+            throw new Error(`Channel '${code}' not found`);
+        }
+        
+        channel.isActive = isActive;
+        return this.channels.save(channel);
   }
 }

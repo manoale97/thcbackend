@@ -10,6 +10,12 @@ import {
 import { Exclude } from 'class-transformer';
 import * as argon2 from 'argon2';
 
+export enum Roles {
+    Admin = 'admin',
+    client = 'client',
+    employee = 'employee',
+}
+
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn('uuid')
@@ -33,6 +39,12 @@ export class User {
 
     @Column({ nullable: true })
     lastName!: string;
+
+    @Column({ 
+            type: 'string',
+            default:Roles.client
+        })
+    role!: string;
 
     @CreateDateColumn()
     createdAt!: Date;

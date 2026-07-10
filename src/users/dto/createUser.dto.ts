@@ -29,5 +29,9 @@ export class CreateUserDto {
 
     @ApiProperty({ required: false })
     @IsNumber()
-    status?: number;
+    status!: number;
+
+    @ApiProperty({ example: 'client' })
+    @IsString()
+    role!: string;
 }
