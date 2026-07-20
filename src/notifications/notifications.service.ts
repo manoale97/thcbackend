@@ -80,19 +80,22 @@ export class NotificationsService {
       return await this.notificationsRepository.update(id,notification)
   }
 
-  findAll() {
-    return `This action returns all notifications`;
+  async findAll(): Promise<Notification[]> {
+    const notifications = this.notificationsRepository.findAll()
+    return notifications;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} notification`;
+  async findOne(id: string): Promise<Notification> {
+    const notificacion = this.notificationsRepository.findOne(id)
+    return notificacion;
   }
 
-  update(id: number, updateNotificationDto: UpdateNotificationDto) {
-    return `This action updates a #${id} notification`;
+  async update(id: string, updateNotificationDto: UpdateNotificationDto): Promise<string> {
+    this.notificationsRepository.update(id, updateNotificationDto)
+    return `The notification #${id} has been updated`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} notification`;
+  async remove(id: string): Promise<void> {
+    this.notificationsRepository.remove(id);
   }
 }
