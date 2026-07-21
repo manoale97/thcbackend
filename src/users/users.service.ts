@@ -17,6 +17,10 @@ export class UsersService {
     return user;
   }
 
+  async findByEmailWithPassword(email: string): Promise<User | null> {
+    return this.usersRepository.findByEmailWithPassword(email);
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     return this.usersRepository.create(createUserDto);
   }

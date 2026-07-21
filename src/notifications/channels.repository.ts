@@ -14,18 +14,16 @@ export class ChannelsRepository {
   async findOne(id: string): Promise<Channel> {
     const channel = await this.channels.findOne({where: {id, isActive: true}});
     if (!channel) {
-            throw new NotFoundException(`User with ID ${id} not found`);
+            throw new NotFoundException(`Channel with ID ${id} not found`);
         }
     return channel
   }
 
-  async findOneWithCode(code: string): Promise<Channel> {
+  async findOneWithCode(code: string): Promise<Channel | null> {
     const channel = await this.channels.findOne({where: {code, isActive: true}});
-    if (!channel) {
-            throw new NotFoundException(`User with Code ${code} not found`);
-        }
-    return channel
+      return channel ?? null;
   }
+
 
   async create(createChannelDto: CreateChannelDto): Promise<Channel> {
         const channel = this.channels.create(createChannelDto);
@@ -35,7 +33,7 @@ export class ChannelsRepository {
   async remove(id: string): Promise<void> {
     const result = await this.channels.delete(id);
       if (result.affected === 0) {
-          throw new NotFoundException(`User with ID ${id} not found`);
+          throw new NotFoundException(`Channel with ID ${id} not found`);
       }
   }
 

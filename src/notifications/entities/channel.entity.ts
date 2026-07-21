@@ -10,7 +10,6 @@ import {
 import { Notification } from './notification.entity';
 
 @Entity('channels')
-@Index(['code'], { unique: true })
 export class Channel {
     @PrimaryGeneratedColumn('uuid')
     id!: string;

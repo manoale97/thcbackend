@@ -37,6 +37,14 @@ export class UsersRepository {
         return await this.users.save(user);
   }
 
+  async findByEmailWithPassword(email: string): Promise<User | null> {
+    return await this.users
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.email = :email', { email })
+      .getOne();
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
     Object.assign(user, updateUserDto);

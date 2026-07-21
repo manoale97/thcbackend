@@ -38,8 +38,6 @@ export interface NotificationMetadata {
 }
 
 @Entity('notifications')
-@Index(['status', 'createdAt'])
-@Index(['userId', 'status'])
 export class Notification {
     @PrimaryGeneratedColumn('uuid')
     id!: string;

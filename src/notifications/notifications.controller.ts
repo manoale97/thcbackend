@@ -1,12 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { NotificationsService } from './notifications.service';
 import { CreateNotificationDto } from './dto/createNotification.dto';
 import { UpdateNotificationDto } from './dto/updateNotification.dto';
 import { Notification } from './entities/notification.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('notifications')
 @Controller('notifications')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
@@ -19,11 +23,12 @@ export class NotificationsController {
   @Post(':id/send')
   @ApiOperation({ summary: 'Send notification' })
   send(@Param('id') id: string) {
-      return this.notificationsService.send(id);
+    return this.notificationsService.send(id);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all notifications' })
+  @Roles('admin', 'employee')
   findAll() {
       return this.notificationsService.findAll();
   }

@@ -31,7 +31,7 @@ export class User {
     @Exclude() // Excluye de las respuestas serializadas
     password!: string;
 
-    @Column({ default: true })
+    @Column({ default: 1 })
     status!: number;
 
     @Column({ nullable: true })
@@ -41,7 +41,8 @@ export class User {
     lastName!: string;
 
     @Column({ 
-            type: 'string',
+            type: 'varchar',
+            length: 50,
             default:Roles.client
         })
     role!: string;
